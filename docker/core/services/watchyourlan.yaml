@@ -1,0 +1,17 @@
+---
+services:
+  watchyourlan:
+    container_name: watchyourlan
+    image: aceberg/watchyourlan
+    volumes:
+      - /infra/store/watchyourlan:/data
+    environment:
+      - TZ=$TZ
+      - GUIIP=0.0.0.0
+      - GUIPORT=8840
+      - IFACE=wlp2s0
+      - TIMEOUT=120
+      - IGNOREIP=yes
+      - LOGLEVEL=short
+    network_mode: host
+    restart: unless-stopped

@@ -1,0 +1,12 @@
+---
+services:
+  homeassistant:
+    container_name: homeassistant
+    image: homeassistant/home-assistant:stable
+    network_mode: host
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /infra/store/homeassistant:/config
+    environment:
+      - TZ=$TZ
+    restart: unless-stopped

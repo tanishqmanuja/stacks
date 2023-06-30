@@ -1,0 +1,23 @@
+---
+services:
+  portainer:
+    container_name: portainer
+    image: portainer/portainer-ce
+    ports:
+      - 9000:9000 # HTTP (Legacy)
+      # - 9443:9443 # HTTPS
+      # - 8000:8000 # TCP Edge Tunnel (Optional)
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /infra/store/portainer:/data
+    environment:
+      - TZ=$TZ
+    restart: unless-stopped
+    labels:
+      traefik.enable: true
+      traefik.http.routers.portainer.entrypoints: web,websecure
+      traefik.http.routers.portainer.rule: Host(`portainer.local.$DOMAIN_NAME`)
+      traefik.http.routers.portainer.tls: true
+      traefik.http.routers.portainer.service: portainer-core
+      traefik.http.services.portainer-core.loadbalancer.server.port: 9000

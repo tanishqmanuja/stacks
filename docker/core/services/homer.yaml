@@ -1,0 +1,22 @@
+---
+services:
+  homer:
+    container_name: homer
+    image: b4bz/homer
+    user: 1000:1000
+    ports:
+      - 18080:8080
+    volumes:
+      - /infra/store/homer:/www/assets
+    environment:
+      - PUID=1000
+      - PGID=1000
+    restart: unless-stopped
+    labels:
+      traefik.enable: true
+      traefik.http.routers.homer-ims.entrypoints: web,websecure
+      traefik.http.routers.homer-ims.rule: Host(`homelab.home`)
+      traefik.http.routers.homer-ims.tls: true
+      traefik.http.routers.homer.entrypoints: web,websecure
+      traefik.http.routers.homer.rule: Host(`local.$DOMAIN_NAME`)
+      traefik.http.routers.homer.tls: true

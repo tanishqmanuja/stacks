@@ -1,0 +1,9 @@
+# ENV
+env
+**/*.env
+
+# IDE
+.vscode
+
+# User Data
+store

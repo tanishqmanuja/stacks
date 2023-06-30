@@ -1,0 +1,23 @@
+---
+services:
+  duplicati:
+    container_name: duplicati
+    image: lscr.io/linuxserver/duplicati
+    ports:
+      - 8200:8200
+    volumes:
+      - /infra/store/duplicati:/config
+      - /opt/duplicati/backups:/backups
+      - /infra:/source
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=$TZ
+    restart: unless-stopped
+    labels:
+      traefik.enable: true
+      traefik.http.routers.duplicati.entrypoints: web,websecure
+      traefik.http.routers.duplicati.rule: Host(`duplicati.local.$DOMAIN_NAME`)
+      traefik.http.routers.duplicati.tls: true
+      traefik.http.routers.duplicati.service: duplicati-core
+      traefik.http.services.duplicati-core.loadbalancer.server.port: 8200

@@ -1,0 +1,13 @@
+---
+services:
+  esphome:
+    container_name: esphome
+    image: esphome/esphome
+    network_mode: host
+    volumes:
+      - /infra/store/esphome:/config
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - USERNAME=$ESPHOME_USERNAME
+      - PASSWORD=$ESPHOME_PASSWORD
+    restart: unless-stopped

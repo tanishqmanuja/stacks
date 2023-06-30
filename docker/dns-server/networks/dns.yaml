@@ -1,0 +1,15 @@
+networks:
+  default:
+    name: dns
+    driver: ipvlan
+    enable_ipv6: true
+    driver_opts:
+      parent: $HOST_NETWORK_INTERFACE
+      ipvlan_mode: l2
+    ipam:
+      config:
+        - subnet: "192.168.0.0/24"
+          gateway: "192.168.0.1"
+          ip_range: 192.168.0.5/30 # Host Address Range: 192.168.0.5 - 192.168.0.6, Subnet ID: 192.168.0.4,  Broadcast Address: 192.168.0.7
+        - subnet: "2405:201:4018:2d39::c0a8:1/64"
+          gateway: "2405:201:4018:2d39::c0a8:1"

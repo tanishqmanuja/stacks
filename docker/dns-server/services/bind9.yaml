@@ -1,0 +1,19 @@
+services:
+  bind9:
+    container_name: bind9
+    image: ubuntu/bind9
+    networks:
+      default:
+        ipv4_address: 192.168.0.5
+        ipv6_address: 2405:201:4018:2d39::c0a8:5
+    environment:
+      - BIND9_USER=root
+      - TZ=$TZ
+    ports:
+      - "53:53/udp"
+      - "53:53/tcp"
+    volumes:
+      - /var/cache/bind:/var/cache/bind
+      - /var/lib/bind:/var/lib/bind
+      - /infra/store/bind9:/etc/bind:ro
+    restart: unless-stopped

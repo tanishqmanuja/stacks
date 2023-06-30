@@ -1,0 +1,10 @@
+---
+services:
+  mimic3:
+    container_name: mimic3
+    image: mycroftai/mimic3
+    ports:
+      - 59125:59125
+    volumes:
+      - /etc/var/mimic3:/home/mimic3/.local/share/mycroft/mimic3
+    restart: unless-stopped

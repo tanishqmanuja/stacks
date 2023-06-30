@@ -1,0 +1,15 @@
+---
+services:
+  code-server-ha:
+    container_name: code-server-ha
+    image: linuxserver/code-server
+    ports:
+      - 8888:8443
+    volumes:
+      - /infra/store/code-server-ha:/config
+      - /infra/store/homeassistant:/config/workspace
+    environment:
+      - TZ=$TZ
+      - PUID=1000
+      - PGID=1000
+    restart: unless-stopped

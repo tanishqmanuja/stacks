@@ -1,0 +1,27 @@
+services:
+  traefik:
+    container_name: "traefik"
+    image: "traefik"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080" # Dashboard
+    volumes:
+      - /infra/store/traefik:/etc/traefik
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - CF_API_EMAIL=$CF_API_EMAIL
+      - CF_API_KEY=$CF_API_KEY
+    restart: unless-stopped
+    labels:
+      traefik.enable: true
+      traefik.http.middlewares.global-auth.basicauth.users: $TRAEFIK_USER:$TRAEFIK_PASSWORD
+      traefik.http.routers.traefik.entrypoints: web,websecure
+      traefik.http.routers.traefik.rule: Host(`traefik.local.$DOMAIN_NAME`)
+      traefik.http.routers.traefik.middlewares: global-auth
+      traefik.http.routers.traefik.tls: true
+      traefik.http.routers.traefik.tls.certresolver: cloudflare
+      traefik.http.routers.traefik.tls.domains[0].main: local.$DOMAIN_NAME
+      traefik.http.routers.traefik.tls.domains[0].sans: "*.local.$DOMAIN_NAME"
+      traefik.http.routers.traefik.service: api@internal

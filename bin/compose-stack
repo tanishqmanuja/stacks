@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+# Setup a docker compose stack
+# <name>
+#   - networks
+#   - services
+#   compose.yaml
+#   .env
+
+if [ -z "$1" ]
+  then
+    echo "Stack name not provided!"
+    echo " * usage  : compose-stack <name>"
+    echo " * example: compose-stack my-stack"
+    exit 1
+fi
+
+NAME="$1"
+
+mkdir -p $NAME/networks
+mkdir -p $NAME/services
+
+touch $NAME/compose.yaml
+grep -q '^version :' $NAME/compose.yaml || echo "version: \"3.9\"" >> $NAME/compose.yaml
+
+touch $NAME/.env
+echo COMPOSE_PROJECT_NAME=$NAME >> $NAME/.env

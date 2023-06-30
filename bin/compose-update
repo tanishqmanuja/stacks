@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+echo Updating Compose in Directory: $(pwd)
+
+# Find Compose file
+compose_file=$(find . -maxdepth 1 -type f -name docker-compose.yaml -or -name compose.yaml | head -n 1)
+if [[ ! $compose_file ]]; then
+  echo "No Compose file found!"
+  exit 1
+fi
+
+echo "[+] Generating Env"
+
+# Collect all sub-compose file paths.
+partial_files=$(find ./networks ./services -type f -name "*.yaml" ! -name '_*.yaml' -print 2>/dev/null)
+
+for file in $partial_files; do
+  compose_file="${file}${compose_file:+:$compose_file}"
+
+  type=$(dirname $file | awk -F/ '{print $2}' | sed -e 's/.*/\u&/' | sed 's/.$//' | sed 's/\(.\{25\}\).*/\1.../')
+  name=$(basename $file .yaml)
+  printf " ⠿ %-29s Added\n" "$type $name"
+done
+
+# Check if COMPOSE_FILE property exists else append.
+grep -q '^COMPOSE_FILE=' .env || echo "
+# THIS IS AN AUTO-GENERATED LINE
+COMPOSE_FILE=$compose_file" >> .env
+
+# Overwrite the COMPOSE_FILE property
+sed -i "/COMPOSE_FILE=/c\COMPOSE_FILE=$compose_file" .env
+
+echo ""
