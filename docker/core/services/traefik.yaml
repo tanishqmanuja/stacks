@@ -13,13 +13,14 @@ services:
     environment:
       - CF_API_EMAIL=$CF_API_EMAIL
       - CF_API_KEY=$CF_API_KEY
+      - BASIC_AUTH_USER=$TRAEFIK_USER
+      - BASIC_AUTH_PASSWORD=$TRAEFIK_PASSWORD
     restart: unless-stopped
     labels:
       traefik.enable: true
-      traefik.http.middlewares.global-auth.basicauth.users: $TRAEFIK_USER:$TRAEFIK_PASSWORD
       traefik.http.routers.traefik.entrypoints: web,websecure
       traefik.http.routers.traefik.rule: Host(`traefik.local.$DOMAIN_NAME`)
-      traefik.http.routers.traefik.middlewares: global-auth
+      traefik.http.routers.traefik.middlewares: web-to-websecure@file
       traefik.http.routers.traefik.tls: true
       traefik.http.routers.traefik.tls.certresolver: cloudflare
       traefik.http.routers.traefik.tls.domains[0].main: local.$DOMAIN_NAME
