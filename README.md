@@ -20,8 +20,20 @@ compose-stack my-stack
 
 #### Updating partial compose files in a stack
 
+1. Calling from inside a stack root directory
+
 ```fish
 compose-update
 ```
 
-> Must be called from inside a stack root directory
+OR
+
+```fish
+compose-update .
+```
+
+2. Providing stack dir in first argument
+
+```fish
+compose-update docker/core
+```
