@@ -10,7 +10,7 @@ Must be done to use scripts.
 source env.fish
 ```
 
-### Using Command
+### Using Commands
 
 #### Creating a new stack
 
