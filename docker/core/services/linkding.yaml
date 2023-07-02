@@ -5,7 +5,7 @@ services:
     ports:
       - 9090:9090
     volumes:
-      - /infra/store/linkding:/etc/linkding/data"
+      - /infra/store/linkding:/etc/linkding/data
     environment:
       - LD_SUPERUSER_NAME=$LD_SUPERUSER_NAME
       - LD_SUPERUSER_PASSWORD=$LD_SUPERUSER_PASSWORD
