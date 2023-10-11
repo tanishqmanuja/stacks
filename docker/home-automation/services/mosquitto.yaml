@@ -1,0 +1,11 @@
+---
+services:
+  mosquitto:
+    container_name: mosquitto
+    image: eclipse-mosquitto
+    network_mode: host
+    volumes:
+      - /infra/store/mosquitto/conf:/mosquitto/config
+      - /infra/store/mosquitto/data:/mosquitto/data
+      - /infra/store/mosquitto/log:/mosquitto/log
+    restart: unless-stopped
