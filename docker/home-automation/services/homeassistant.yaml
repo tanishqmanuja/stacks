@@ -4,9 +4,12 @@ services:
     container_name: homeassistant
     image: homeassistant/home-assistant:stable
     network_mode: host
+    privileged: true
     volumes:
       - /etc/localtime:/etc/localtime:ro
+      - /run/dbus:/run/dbus:ro
       - /infra/store/homeassistant:/config
     environment:
       - TZ=$TZ
+    command: /bin/sh -c "apk add gcc musl-dev bluez-dev ; /init" # fix for bluez
     restart: unless-stopped
