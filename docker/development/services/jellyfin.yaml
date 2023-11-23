@@ -9,8 +9,8 @@ services:
       - /infra/store/jellyfin/cache:/cache
       - /infra/store/jellyfin/media:/media
       - ~/Movies:/movies:ro
-    restart: "unless-stopped"
     environment:
       - JELLYFIN_PublishedServerUrl=jellyfin.local.$DOMAIN_NAME
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    restart: unless-stopped
