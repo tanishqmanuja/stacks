@@ -1,0 +1,26 @@
+---
+services:
+  homeassistant:
+    container_name: homeassistant
+    image: ghcr.io/home-assistant/home-assistant:stable
+    restart: unless-stopped
+    network_mode: host
+    privileged: true
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    volumes:
+      - /run/dbus:/run/dbus:ro
+      - /etc/localtime:/etc/localtime:ro
+      - ../store/homeassistant:/config
+    environment:
+      - TZ=$TZ
+      - PUID=${UID}
+      - PGID=${GID}
+      - UMASK=007
+      - PACKAGES=iputils
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.homeassistant.rule=Host(`homeassistant.local`)"
+      - "traefik.http.routers.homeassistant.entrypoints=web"
+      - "traefik.http.services.homeassistant.loadbalancer.server.port=8123"

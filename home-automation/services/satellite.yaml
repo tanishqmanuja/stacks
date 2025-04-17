@@ -1,0 +1,61 @@
+---
+services:
+  satellite:
+    image: "ghcr.io/florian-asche/wyoming-satellite:add-docker-build"
+    container_name: satellite
+    network_mode: host
+    restart: unless-stopped
+    devices:
+      - /dev/snd:/dev/snd
+    depends_on:
+      - openwakeword
+    # ports:
+    #   - "10700:10700"
+    command:
+      - "--name"
+      - "Server Satellite"
+
+      # Mic Service
+      - "--mic-command"
+      - "arecord -D pipewire -r 16000 -c 1 -f S16_LE -t raw"
+      - "--mic-auto-gain"
+      - "5"
+      - "--mic-noise-suppression"
+      - "0"
+
+      # Sound Service
+      - "--snd-command"
+      - "aplay -D pipewire -r 22050 -c 1 -f S16_LE -t raw"
+      - "--snd-volume-multiplier"
+      - "1.0"
+
+      # Local Wake Word Service
+      - "--wake-uri"
+      - "tcp://127.0.0.1:10400"
+      - "--wake-word-name"
+      - "jarvis"
+      - "--wake-refractory-seconds"
+      - "3"
+
+      # Misc
+      - "--awake-wav"
+      - "sounds/awake.wav"
+      - "--done-wav"
+      - "sounds/done.wav"
+      - "--timer-finished-wav"
+      - "sounds/timer_finished.wav"
+
+      # Debug
+      # - "--debug-recording-dir"
+      # - "/data/rec"
+      # - "--debug"
+
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /run/user/${UID}/pipewire-0:/run/pipewire-0
+      - ../store/satellite/rec:/data/rec
+    environment:
+      - PIPEWIRE_RUNTIME_DIR=/run
+      - XDG_RUNTIME_DIR=/run
+    labels:
+      - com.centurylinklabs.watchtower.enable = "false"

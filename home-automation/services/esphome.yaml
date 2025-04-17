@@ -1,0 +1,19 @@
+---
+services:
+  esphome:
+    container_name: esphome
+    image: esphome/esphome:stable
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ../store/esphome:/config
+    environment:
+      - USERNAME=$ESPHOME_USERNAME
+      - PASSWORD=$ESPHOME_PASSWORD
+      - TZ=$TZ
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.esphome.rule=Host(`esphome.local`)"
+      - "traefik.http.routers.esphome.entrypoints=web"
+      - "traefik.http.services.esphome.loadbalancer.server.port=6052"

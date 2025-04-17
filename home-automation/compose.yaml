@@ -1,0 +1,10 @@
+# Home Automation Stack
+
+include:
+  - ./networks/core.yaml
+  - ./services/homeassistant.yaml
+  - ./services/esphome.yaml
+  - ./services/matter.yaml
+  - ./services/mosquitto.yaml
+  - ./services/voice.yaml
+  - ./services/satellite.yaml

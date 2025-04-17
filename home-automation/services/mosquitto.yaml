@@ -1,0 +1,12 @@
+---
+services:
+  mosquitto:
+    user: "${UID}:${GID}"
+    container_name: mosquitto
+    image: eclipse-mosquitto
+    network_mode: host
+    volumes:
+      - ../store/mosquitto/config:/mosquitto/config
+      - ../store/mosquitto/data:/mosquitto/data
+      - ../store/mosquitto/log:/mosquitto/log
+    restart: unless-stopped

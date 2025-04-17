@@ -1,0 +1,72 @@
+---
+services:
+  # Speech to Text
+  whisper:
+    image: rhasspy/wyoming-whisper
+    container_name: whisper
+    restart: unless-stopped
+    ports:
+      - "10300:10300"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ../store/whisper/data:/data
+    command: [
+        "--model",
+        "tiny-int8",
+        # "base-int8",
+        "--language",
+        "en",
+      ]
+
+  # Speech to Phrase
+  speech-to-phrase:
+    image: rhasspy/wyoming-speech-to-phrase
+    container_name: speech-to-phrase
+    restart: unless-stopped
+    ports:
+      - 10301:10300
+    volumes:
+      - ../store/speech-to-phrase/models:/models
+      - ../store/speech-to-phrase/train:/train
+      - ../store/homeassistant/custom_sentences:/custom-sentences:ro
+    environment:
+      - HA_TOKEN=${HA_TOKEN}
+    command: >
+      --hass-websocket-uri 'ws://192.168.0.12:8123/api/websocket'
+      --hass-token $HA_TOKEN
+      --custom-sentences-dir '/custom-sentences'
+      --retrain-on-start
+
+  # Text to Speech
+  piper:
+    image: rhasspy/wyoming-piper
+    container_name: piper
+    restart: unless-stopped
+    ports:
+      - "10200:10200"
+    devices:
+      - /dev/snd:/dev/snd
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ../store/piper/data:/data
+    command: ["--voice", "en_GB-alan-medium"] # more: https://rhasspy.github.io/piper-samples/
+
+  # Hotword Detection
+  openwakeword:
+    image: rhasspy/wyoming-openwakeword
+    container_name: openwakeword
+    restart: unless-stopped
+    ports:
+      - "10400:10400"
+    devices:
+      - /dev/snd:/dev/snd
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ../store/openwakeword/data:/data
+      - ../store/openwakeword/models:/custom-models
+    command: [
+        "--custom-model-dir",
+        "/custom-models",
+        "--preload-model",
+        "jarvis",
+      ] # more: https://github.com/fwartner/home-assistant-wakewords-collection

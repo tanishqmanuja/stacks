@@ -1,0 +1,7 @@
+---
+networks:
+  default:
+    name: core
+    ipam:
+      config:
+        - subnet: 172.16.0.0/24

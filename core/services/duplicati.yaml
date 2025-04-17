@@ -1,0 +1,20 @@
+---
+services:
+  duplicati:
+    container_name: duplicati
+    image: lscr.io/linuxserver/duplicati:latest
+    privileged: true
+    ports:
+      - 8200:8200
+    volumes:
+      - /opt/duplicati/backups:/backups
+      - ~/stacks:/source
+      - ~/Downloads/duplicati/infra:/infra
+      - ../store/duplicati:/config
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=$TZ
+      - SETTINGS_ENCRYPTION_KEY=$DUPLICATI_SETTINGS_ENCRYPTION_KEY
+      - DUPLICATI__WEBSERVICE_PASSWORD=$DUPLICATI_WEBSERVICE_PASSWORD
+    restart: unless-stopped
