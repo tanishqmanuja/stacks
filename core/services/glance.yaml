@@ -1,0 +1,17 @@
+services:
+  glance:
+    container_name: glance
+    image: glanceapp/glance
+    restart: unless-stopped
+    volumes:
+      - ../store/glance:/app/config
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 8082:8080
+    environment:
+      - GITHUB_TOKEN=$GITHUB_TOKEN
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dashboard.rule=Host(`dashboard.local`)"
+      - "traefik.http.routers.dashboard.entrypoints=web"
+      - "traefik.http.services.dashboard.loadbalancer.server.port=8080"

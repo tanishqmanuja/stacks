@@ -4,3 +4,4 @@ include:
   - ./networks/core.yaml
   - ./services/watchtower.yaml # Auto Update Containers
   - ./services/traefik.yaml # Reverse Proxy
+  - ./services/glance.yaml # Dashboard
