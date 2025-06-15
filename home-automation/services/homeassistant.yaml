@@ -15,10 +15,6 @@ services:
       - ../store/homeassistant:/config
     environment:
       - TZ=$TZ
-      - PUID=${UID}
-      - PGID=${GID}
-      - UMASK=007
-      - PACKAGES=iputils
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.homeassistant.rule=Host(`homeassistant.local`)"

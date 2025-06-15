@@ -10,3 +10,19 @@ services:
       - /run/dbus:/run/dbus:ro
       - ../store/matter:/data
     restart: unless-stopped
+
+  matter-hub:
+    container_name: matter-hub
+    image: ghcr.io/t0bst4r/home-assistant-matter-hub:3.0.0-alpha.76
+    network_mode: host
+    security_opt:
+      - apparmor:unconfined
+    volumes:
+      - /run/dbus:/run/dbus:ro
+      - ../store/matter-hub:/data
+    restart: unless-stopped
+    environment:
+      - HAMH_HOME_ASSISTANT_URL=http://192.168.0.12:8123/
+      - HAMH_HOME_ASSISTANT_ACCESS_TOKEN=${HA_TOKEN}
+      - HAMH_LOG_LEVEL=info
+      - HAMH_HTTP_PORT=8482
