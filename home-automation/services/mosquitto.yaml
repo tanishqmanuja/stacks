@@ -6,7 +6,7 @@ services:
     image: eclipse-mosquitto
     network_mode: host
     volumes:
-      - ../store/mosquitto/config:/mosquitto/config
-      - ../store/mosquitto/data:/mosquitto/data
-      - ../store/mosquitto/log:/mosquitto/log
+      - ${STACKS_CONFIG}/mosquitto:/mosquitto/config
+      - ${STACKS_VOLUME}/mosquitto/data:/mosquitto/data
+      - ${STACKS_VOLUME}/mosquitto/log:/mosquitto/log
     restart: unless-stopped

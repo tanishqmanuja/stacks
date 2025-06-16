@@ -8,8 +8,8 @@ services:
     ports:
       - "10300:10300"
     volumes:
+      - ../volumes/whisper/data:/data
       - /etc/localtime:/etc/localtime:ro
-      - ../store/whisper/data:/data
     command: [
         "--model",
         "tiny-int8",
@@ -26,9 +26,9 @@ services:
     ports:
       - 10301:10300
     volumes:
-      - ../store/speech-to-phrase/models:/models
-      - ../store/speech-to-phrase/train:/train
-      - ../store/homeassistant/custom_sentences:/custom-sentences:ro
+      - ../volumes/speech-to-phrase/models:/models
+      - ../volumes/speech-to-phrase/train:/train
+      - ../config/homeassistant/custom_sentences:/custom-sentences:ro
     environment:
       - HA_TOKEN=${HA_TOKEN}
     command: >

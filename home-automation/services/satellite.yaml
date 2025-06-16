@@ -51,9 +51,9 @@ services:
       # - "--debug"
 
     volumes:
+      - ../volumes/satellite/rec:/data/rec
       - /etc/localtime:/etc/localtime:ro
       - /run/user/${UID}/pipewire-0:/run/pipewire-0
-      - ../store/satellite/rec:/data/rec
     environment:
       - PIPEWIRE_RUNTIME_DIR=/run
       - XDG_RUNTIME_DIR=/run

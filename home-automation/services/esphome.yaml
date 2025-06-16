@@ -2,16 +2,21 @@
 services:
   esphome:
     container_name: esphome
-    image: esphome/esphome:stable
+    image: ghcr.io/esphome/esphome:latest
     restart: unless-stopped
     network_mode: host
     volumes:
+      - ${STACKS_CONFIG}/homeassistant/esphome:/config
+      - ${STACKS_VOLUME}/esphome/data:/data
+      - ${STACKS_VOLUME}/esphome/build:/build
+      - ${STACKS_VOLUME}/esphome/cache:/cache
+      - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ../store/esphome:/config
     environment:
       - USERNAME=$ESPHOME_USERNAME
       - PASSWORD=$ESPHOME_PASSWORD
-      - TZ=$TZ
+      - ESPHOME_DATA_DIR=/data
+      - ESPHOME_TRUSTED_DOMAINS=homeassistant
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.esphome.rule=Host(`esphome.local`)"

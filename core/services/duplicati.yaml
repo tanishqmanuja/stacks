@@ -7,10 +7,10 @@ services:
     ports:
       - 8200:8200
     volumes:
+      - ${STACKS_CONFIG}/duplicati:/config
       - /opt/duplicati/backups:/backups
       - ~/stacks:/source
       - ~/Downloads/duplicati/infra:/infra
-      - ../store/duplicati:/config
     environment:
       - PUID=0
       - PGID=0

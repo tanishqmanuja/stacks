@@ -6,5 +6,3 @@ include:
   - ./services/esphome.yaml
   - ./services/matter.yaml
   - ./services/mosquitto.yaml
-  - ./services/voice.yaml
-  - ./services/satellite.yaml

@@ -1,5 +1,8 @@
 # Environment files
 **/.env
 
-# Data Stores
-/*/store
+# Configs
+/.config
+
+# Volumes
+/.volumes

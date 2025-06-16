@@ -10,11 +10,9 @@ services:
       - NET_ADMIN
       - NET_RAW
     volumes:
+      - ${STACKS_CONFIG}/homeassistant:/config
       - /run/dbus:/run/dbus:ro
       - /etc/localtime:/etc/localtime:ro
-      - ../store/homeassistant:/config
-    environment:
-      - TZ=$TZ
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.homeassistant.rule=Host(`homeassistant.local`)"

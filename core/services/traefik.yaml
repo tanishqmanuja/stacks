@@ -2,15 +2,14 @@ services:
   traefik:
     container_name: "traefik"
     image: "traefik"
-    # network_mode: host
     ports:
       - "80:80" # HTTP
       - "443:443" # HTTPS
       - "8080:8080" # Dashboard
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ${STACKS_CONFIG}/traefik:/etc/traefik
       - /etc/localtime:/etc/localtime:ro
-      - ../store/traefik:/etc/traefik
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     restart: unless-stopped
     extra_hosts:
       - "host.docker.internal:172.16.0.1"
@@ -19,3 +18,14 @@ services:
       - "traefik.http.routers.traefik.rule=Host(`traefik.local`)"
       - "traefik.http.routers.traefik.entrypoints=web"
       - "traefik.http.services.traefik.loadbalancer.server.port=8080"
+
+  traefik-avahi-helper:
+    container_name: "traefik-avahi-helper"
+    image: hardillb/traefik-avahi-helper
+    security_opt:
+      - apparmor:unconfined
+    volumes:
+        - /var/run/docker.sock:/var/run/docker.sock:ro
+        - /run/dbus/system_bus_socket:/run/dbus/system_bus_socket
+    restart: unless-stopped
+

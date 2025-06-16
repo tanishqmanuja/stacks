@@ -7,8 +7,8 @@ services:
     security_opt:
       - apparmor:unconfined
     volumes:
+      - ${STACKS_VOLUME}/matter-server:/data
       - /run/dbus:/run/dbus:ro
-      - ../store/matter:/data
     restart: unless-stopped
 
   matter-hub:
@@ -18,8 +18,8 @@ services:
     security_opt:
       - apparmor:unconfined
     volumes:
+      - ${STACKS_VOLUME}/matter-hub:/data
       - /run/dbus:/run/dbus:ro
-      - ../store/matter-hub:/data
     restart: unless-stopped
     environment:
       - HAMH_HOME_ASSISTANT_URL=http://192.168.0.12:8123/
