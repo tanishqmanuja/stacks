@@ -6,7 +6,7 @@ services:
     restart: unless-stopped
     network_mode: host
     volumes:
-      - ${STACKS_CONFIG}/homeassistant/esphome:/config
+      - ${HA_CONFIG}/esphome:/config
       - ${STACKS_VOLUME}/esphome/data:/data
       - ${STACKS_VOLUME}/esphome/build:/build
       - ${STACKS_VOLUME}/esphome/cache:/cache
@@ -16,7 +16,6 @@ services:
       - USERNAME=$ESPHOME_USERNAME
       - PASSWORD=$ESPHOME_PASSWORD
       - ESPHOME_DATA_DIR=/data
-      - ESPHOME_TRUSTED_DOMAINS=homeassistant
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.esphome.rule=Host(`esphome.local`)"

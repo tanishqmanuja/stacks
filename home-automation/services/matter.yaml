@@ -7,7 +7,7 @@ services:
     security_opt:
       - apparmor:unconfined
     volumes:
-      - ${STACKS_VOLUME}/matter-server:/data
+      - ${HA_CONFIG}/.addons/matter-server:/data
       - /run/dbus:/run/dbus:ro
     restart: unless-stopped
 
@@ -18,7 +18,7 @@ services:
     security_opt:
       - apparmor:unconfined
     volumes:
-      - ${STACKS_VOLUME}/matter-hub:/data
+      - ${HA_CONFIG}/.addons/matter-hub:/data
       - /run/dbus:/run/dbus:ro
     restart: unless-stopped
     environment:

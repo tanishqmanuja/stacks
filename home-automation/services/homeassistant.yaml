@@ -10,7 +10,7 @@ services:
       - NET_ADMIN
       - NET_RAW
     volumes:
-      - ${STACKS_CONFIG}/homeassistant:/config
+      - ${HA_CONFIG}:/config
       - /run/dbus:/run/dbus:ro
       - /etc/localtime:/etc/localtime:ro
     labels:
